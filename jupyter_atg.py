@@ -459,7 +459,7 @@ c.JupyterHub.proxy_cmd = ["/usr/local/bin/configurable-http-proxy"]
 ## Path to SSL certificate file for the public facing interface of the proxy
 #  When setting this, you should also set ssl_key
 #  Default: ''
-c.JupyterHub.ssl_cert = "/etc/letsencrypt/archive/atgenomics.ddns.net/fullchain.pem"
+c.JupyterHub.ssl_cert = "/etc/letsencrypt/archive/atgenomics.ddns.net/fullchain1.pem"
 ## Path to SSL key file for the public facing interface of the proxy
 #  When setting this, you should also set ssl_cert
 #  Default: ''

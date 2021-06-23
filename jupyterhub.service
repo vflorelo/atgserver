@@ -3,6 +3,6 @@ Description=Jupyterhub
 After=syslog.target network.target
 [Service]
 User=root
-ExecStart=/usr/local/bin/jupyterhub --ssl-key /etc/letsencrypt/archive/atgenomics.ddns.net/privkey1.pem --ssl-cert /etc/letsencrypt/archive/atgenomics.ddns.net/fullchain.pem
+ExecStart=/usr/local/bin/jupyterhub -f /etc/jupyterhub/jupyter_atg.py
 [Install]
 WantedBy=multi-user.target

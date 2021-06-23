@@ -3,8 +3,8 @@
 add-apt-repository universe
 apt-get update
 apt-get upgrade
-apt-get install autoconf automake build-essential cmake gcc gfortran git libblas-dev libcurl4-gnutls-dev liblapack-dev libltdl-dev libssl-dev libxrender-dev libxtst-dev make python3-pip python3-certbot-apache libapache2-mod-php7.4 nodejs npm nodejs-legacy cockpit cockpit-ws
-npm install configurable-http-proxy
+apt-get install autoconf automake build-essential cmake gcc gfortran git libblas-dev libcurl4-gnutls-dev liblapack-dev libltdl-dev libssl-dev libxrender-dev libxtst-dev make python3-pip python3-certbot-apache libapache2-mod-php7.4 nodejs npm cockpit cockpit-ws
+npm install -g configurable-http-proxy
 pip3 install jupyterhub
 #step2
 wget http://www.noip.com/client/linux/noip-duc-linux.tar.gz
