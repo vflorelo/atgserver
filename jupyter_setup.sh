@@ -3,7 +3,7 @@
 add-apt-repository universe
 apt-get update
 apt-get upgrade
-apt-get install autoconf automake build-essential cmake gcc gfortran git libblas-dev libcurl4-gnutls-dev liblapack-dev libltdl-dev libssl-dev libxrender-dev libxtst-dev make python3-pip python3-certbot-apache libapache2-mod-php7.4 nodejs npm cockpit cockpit-ws
+apt-get install autoconf automake build-essential cmake gcc gfortran git libblas-dev libcurl4-gnutls-dev liblapack-dev libltdl-dev libssl-dev libxrender-dev libxtst-dev make python3.9 python3-pip python3-certbot-apache libapache2-mod-php7.4 nodejs npm cockpit cockpit-ws python3-biopython python3-biopython-sql
 npm install -g configurable-http-proxy
 pip3 install jupyterhub
 #step2
@@ -28,7 +28,8 @@ hostname atgenomics.ddns.net
 cd /usr/bin
 ln -s python3 python
 pip3 install powerline-shell
-pip3 install  --upgrade notebook
+pip3 install --upgrade notebook
+pip3 install primers pydna
 echo "
 function _update_ps1() {
   PS1=\$(powerline-shell \$?)
@@ -39,16 +40,19 @@ then
 fi" >>  /etc/profile
 #step4
 groupadd bioinformatics
-for user in solnavss dianolasa zorbax vflorelo
+for user in solnavss dianolasa atgbot vflorelo fhernandez cfranco cmanjarrez jesquivel rsumano sgalvan sjuarez sortega vfuentes
 do
   useradd --create-home --gid bioinformatics --shell /bin/bash $user
   echo -e "${user}atg\n${user}atg" | passwd $user
-  mkdir /home/$user/.ssh
+  mkdir /home/$user/.ssh /home/$user/.jupyter
   cp /home/ubuntu/.ssh/authorized_keys /home/$user/.ssh
-  chown -R $user /home/$user/.ssh
-  chgrp -R bioinformatics /home/$user/.ssh
+  chown -R $user /home/$user/.ssh /home/$user/.jupyter
+  chgrp -R bioinformatics /home/$user/.ssh /home/$user/.jupyter
   chmod -R 700 /home/$user/.ssh
+  chmod -R 755 /home/$user/.jupyter
   echo "source /etc/profile" >> /home/$user/.bashrc
+  wget https://github.com/vflorelo/atgserver/raw/main/jupyter_notebook_config.py -P /home/$user/.jupyter
+  chmod -R 755 /home/$user/.jupyter
 done
 #step5
 certbot --apache
@@ -68,3 +72,24 @@ cd /etc/jupyterhub
 wget https://github.com/vflorelo/atgserver/raw/main/jupyter_atg.py
 systemctl daemon-reload
 service jupyterhub start
+cd /usr/local
+wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.12.0/ncbi-blast-2.12.0+-x64-linux.tar.gz
+tar -zxf ncbi-blast-2.12.0+-x64-linux.tar.gz
+mv ncbi-blast-2.12.0+/bin/* bin/
+wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/edirect.tar.gz
+wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/rchive.Linux.gz
+wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/transmute.Linux.gz
+wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/xtract.Linux.gz
+tar -zxf edirect.tar.gz
+gunzip rchive.Linux.gz transmute.Linux.gz xtract.Linux.gz
+chmod 775 rchive.Linux.gz transmute.Linux.gz xtract.Linux.gz
+chown root rchive.Linux transmute.Linux xtract.Linux
+chgrp bioinformatics rchive.Linux transmute.Linux xtract.Linux
+chmod 775 rchive.Linux transmute.Linux xtract.Linux
+mv rchive.Linux transmute.Linux xtract.Linux edirect
+mv edirect/* bin/
+wget http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/5.52-86.0/interproscan-5.52-86.0-64-bit.tar.gz
+tar -pxvzf interproscan-5.52-86.0-64-bit.tar.gz
+cd interproscan-5.52-86.0
+python3 initial_setup.py
+mv interproscan-5.52-86.0/* bin/

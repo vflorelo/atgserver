@@ -492,7 +492,7 @@ c.JupyterHub.ssl_key = "/etc/letsencrypt/archive/atgenomics.ddns.net/privkey1.pe
 # c.JupyterHub.template_vars = {}
 ## Extra settings overrides to pass to the tornado application.
 #  Default: {}
-# c.JupyterHub.tornado_settings = {}
+c.JupyterHub.tornado_settings = {'headers':{'Content-Security-Policy': "frame-ancestors 'self' https://atgenomics.ddns.net"}}
 ## Trust user-provided tokens (via JupyterHub.service_tokens) to have good
 #  entropy.
 #  If you are not inserting additional tokens via configuration file, this flag
